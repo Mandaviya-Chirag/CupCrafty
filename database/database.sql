@@ -80,11 +80,21 @@ CREATE TABLE
 );
 
 CREATE TABLE 
+    `purchase` (
+        `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+        `BranchId` INT NOT NULL,
+        `ProductId` INT NOT NULL,
+        `Quantity` INT NOT NULL,
+        FOREIGN KEY (`BranchId`) REFERENCES `BranchDetails` (`Id`),
+        FOREIGN KEY (`ProductId`) REFERENCES `Products` (`Id`)
+);
+
+CREATE TABLE 
     `Sales` (
         `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `BranchId` INT NOT NULL,
         `ProductId` INT NOT NULL,
-        `CurrentQuantity` INT NOT NULL,
+        `Quantity` INT NOT NULL,
         FOREIGN KEY (`BranchId`) REFERENCES `BranchDetails` (`Id`),
         FOREIGN KEY (`ProductId`) REFERENCES `Products` (`Id`)
 );
