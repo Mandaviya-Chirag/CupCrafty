@@ -3,6 +3,14 @@ require '../../includes/init.php';
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
 ?>
+
+<?php
+
+$query = "SELECT * FROM city";
+$rows = select($query);
+
+?>
+
 <div class="main-panel">
   <div class="content-wrapper">
     <div class="row">
@@ -11,10 +19,10 @@ include pathOf('includes/sidebar.php');
           <div class="card-body">
             <div class="row justiyfy-content-between">
               <h4 class="card-title col-10">City</h4>
-              <div class="btn btn-primary col-1 mb-5">
+              <a class="btn btn-primary col-1 mb-5" href="./add.php">
                 <i class="mdi mdi-plus"></i>
-              </div>
-            </div>  
+              </a>
+            </div>
             <div class="table-responsive">
               <table class="table">
                 <thead>
@@ -25,20 +33,27 @@ include pathOf('includes/sidebar.php');
                     <th>Delete</th>
                   </tr>
                 </thead>
-                <tbody>
+                </tbody>
+                <?php foreach ($rows as $user): ?>
                   <tr>
-                    <td>1</td>
-                    <td>jamnagar</td>
-                  <td>
+                    <td><?= $user['Id'] ?></td>
+                    <td><?= $user['Name'] ?></td>
+                    <td>
+                      <a href="./update.php?id=<?= $user['Id'] ?>">
                         <div class="btn btn-primary me-2">
-                        <i class="mdi mdi-table-edit"></i>
+                          <i class="mdi mdi-table-edit"></i>
                         </div>
-                        </td>
-                        <td><div class="btn btn-primary me-2">
-                        <i class="mdi mdi-delete-variant"></i>
+                      </a>
+                    </td>
+                    <td>
+                      <a href="../../api/city/delete.php?id=<?= $user['Id'] ?>">
+                        <div class="btn btn-primary me-2">
+                          <i class="mdi mdi-delete-variant"></i>
                         </div>
-                  </td>
+                      </a>
+                    </td>
                   </tr>
+                <?php endforeach; ?>
                 </tbody>
               </table>
             </div>

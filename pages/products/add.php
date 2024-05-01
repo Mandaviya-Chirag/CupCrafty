@@ -23,7 +23,7 @@ include pathOf('includes/sidebar.php');
               </div>
               <div class="form-group">
                 <label>ImageFile</label>
-                <input type="text" class="form-control" id="imagefile" placeholder="imagefile" />
+                <input type="file" class="form-control" id="imagefile" placeholder="imagefile" />
               </div>
               <div class="form-group">
                 <label>Description</label>

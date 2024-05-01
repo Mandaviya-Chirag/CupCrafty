@@ -1,5 +1,7 @@
 <?php
 require '../../includes/init.php';
+
+$cities = select("SELECT * FROM city");
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
 ?>
@@ -15,17 +17,25 @@ include pathOf('includes/sidebar.php');
             <form class="forms-sample">
               <div class="form-group">
                 <div class="form-group">
-                <label for="">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter name" />
+                  <label for="">Owner</label>
+                  <input type="text" class="form-control" id="OwnerName" placeholder="Enter Name" autofocus/>
+                </div>
+                <div>
+                <label for="">CityName</label>
+                <select name="" id="cityId">
+                  <?php foreach ($cities as $city): ?>
+                    <option value="<?= $city['Id'] ?>"><?= $city['Name'] ?></option>
+                  <?php endforeach; ?>
+                </select>
                 </div>
                 <div class="form-group">
                   <label for="">Squarefeet</label>
-                  <input type="text" class="form-control" id="squarefeet" placeholder="Enter squarefeet" />
+                  <input type="text" class="form-control" id="Squarefeet" name="Squarefeet" placeholder="Enter Squarefeet"/>
                 </div>
-                <label for="">Adress</label>
-                <input type="text" class="form-control" id="address" placeholder="Enter address" autofocus/>
+                <label for="">Address</label>
+                <input type="text" class="form-control" id="Address" name="Address" placeholder="Enter Address"/>
               </div>
-                <button type="submit" class="btn btn-primary me-2">
+              <button type="submit" class="btn btn-primary me-2" onclick="sendData()">
                 Add
               </button>
               <button class="btn btn-light">Cancel</button>
@@ -41,5 +51,33 @@ include pathOf('includes/sidebar.php');
 <?php
 include pathOf('/includes/footer.php');
 include pathOf('/includes/script.php');
+?>
+<script>
+  function sendData() {
+    var OwnerName = $('#OwnerName').val();
+    var cityId = $('#cityId').val();
+    var Squarefeet = $('#Squarefeet').val();
+    var Address =  $('#Address').val();
+
+
+    $.ajax({
+      url: '../../api/branchdetails/insert.php',
+      method: 'POST',
+      data: {
+        OwnerName :OwnerName,
+        cityId :cityId,
+        Squarefeet :Squarefeet,
+        Address :Address
+      },
+      success: function (response) {
+        alert("Branchdetails Added");
+        window.location.href = './index.php';
+      }
+
+    })
+  }
+</script>
+
+<?php
 include pathOf('/includes/pageEnd.php');
 ?>

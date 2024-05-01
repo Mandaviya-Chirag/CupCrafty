@@ -4,6 +4,14 @@ include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
 ?>
 
+<?php
+
+$id = $_GET["id"];
+$query = "SELECT * FROM categories WHERE Id = $id";
+$rows = selectOne($query);
+
+?>
+
 <div class="main-panel">
   <div class="content-wrapper">
     <div class="row">
@@ -14,14 +22,14 @@ include pathOf('includes/sidebar.php');
             <p class="card-description">Update category</p>
             <form class="forms-sample">
               <div class="form-group">
-                <label for="">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter Name" autofocus />
+                <label for="">Id</label>
+                <input type="text" class="form-control" id="Id" name="Id" readonly value="<?= $rows['Id']?>"autofocus>
               </div>
               <div class="form-group">
-                <label for="">Description</label>
-                <input type="text" class="form-control" id="description" placeholder="Enter Description" />
+                <label for="">Name</label>
+                <input type="text" class="form-control" id="Name" name="Name" value="<?= $rows['Name']?>" placeholder="Enter Name">
               </div>
-              <button type="submit" class="btn btn-primary me-2">
+              <button type="submit" class="btn btn-primary me-2" onclick="updateData()">
                 Update
               </button>
               <button class="btn btn-light">Cancel</button>
@@ -38,3 +46,23 @@ include pathOf('/includes/footer.php');
 include pathOf('/includes/script.php');
 include pathOf('/includes/pageEnd.php');
 ?>
+
+<script>
+        function updateData() {
+            var Id = $("#Id").val();
+            var Name = $("#Name").val();
+
+            $.ajax({
+                url: "../../api/categories/update.php",
+                method: "POST",
+                data: {
+                    Id:Id,
+                    Name: Name
+                },
+                success: function (response) {
+                    alert("Categorie Updated");
+                    window.location.href = './index.php';
+                }
+            })
+        }
+    </script>

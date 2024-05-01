@@ -3,17 +3,25 @@ require '../../includes/init.php';
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
 ?>
+
+<?php
+
+$query = "SELECT * FROM categories";
+$rows = select($query);
+
+?>
+
 <div class="main-panel">
   <div class="content-wrapper">
     <div class="row">
       <div class="col-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-             <div class="row justiyfy-content-between">
+          <div class="row justiyfy-content-between">
               <h4 class="card-title col-10">Categories</h4>
-              <div class="btn btn-primary col-1 mb-5">
+              <a class="btn btn-primary col-1 mb-5" href="./add.php">
                 <i class="mdi mdi-plus"></i>
-              </div>
+              </a>
             </div>
             <div class="table-responsive">
               <table class="table">
@@ -21,26 +29,31 @@ include pathOf('includes/sidebar.php');
                   <tr>
                     <th>Sr.no.</th>
                     <th>Name</th>
-                    <th>Description</th>
                     <th>Modify</th>
                     <th>Delete</th>
                   </tr>
                 </thead>
                 <tbody>
+                <?php foreach($rows as $user): ?>
                   <tr>
-                    <td>1</td>
-                    <td>chirag</td>
-                    <td>22 aug</td>
-                    <td>
+                      <td><?= $user['Id'] ?></td>
+                      <td><?= $user['Name'] ?></td>
+                     <td>
+                      <a href="./update.php?id=<?= $user['Id'] ?>">
                         <div class="btn btn-primary me-2">
-                        <i class="mdi mdi-table-edit"></i>
+                          <i class="mdi mdi-table-edit"></i>
                         </div>
-                        </td>
-                        <td><div class="btn btn-primary me-2">
-                        <i class="mdi mdi-delete-variant"></i>
+                      </a>
+                    </td>
+                    <td>
+                      <a href="../../api/categories/delete.php?id=<?= $user['Id'] ?>">
+                        <div class="btn btn-primary me-2">
+                          <i class="mdi mdi-delete-variant"></i>
                         </div>
-                      </td>
+                      </a>
+                    </td>
                   </tr>
+                  <?php endforeach; ?>
                 </tbody>
               </table>
             </div>

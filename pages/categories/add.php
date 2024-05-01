@@ -14,14 +14,10 @@ include pathOf('includes/sidebar.php');
             <p class="card-description">Add new category</p>
             <form class="forms-sample">
               <div class="form-group">
-                <label for="">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter Name" autofocus/>
+                <label for="example-text-input">Name</label>
+                <input type="text" class="form-control" id="Name" name="Name" placeholder="Enter Name" autofocus>
               </div>
-              <div class="form-group">
-                <label for="">Description</label>
-                <input type="text" class="form-control" id="description" placeholder="Enter Description" />
-              </div>
-              <button type="submit" class="btn btn-primary me-2">
+              <button type="submit" class="btn btn-primary me-2" onclick="sendData()">
                 Add
               </button>
               <button class="btn btn-light">Cancel</button>
@@ -36,5 +32,25 @@ include pathOf('includes/sidebar.php');
 <?php
 include pathOf('/includes/footer.php');
 include pathOf('/includes/script.php');
+
+?>
+<script>
+  function sendData() {
+    var Name = $("#Name").val();
+
+    $.ajax({
+      url: "../../api/categories/insert.php",
+      method: "POST",
+      data: {
+        Name: Name,
+      },
+      success: function (response) {
+        alert("Categorie Added");
+        window.location.href = './index.php';
+      }
+    })
+  }
+</script>
+<?php
 include pathOf('/includes/pageEnd.php');
 ?>

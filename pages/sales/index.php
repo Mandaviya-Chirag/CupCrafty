@@ -9,11 +9,11 @@ include pathOf('includes/sidebar.php');
       <div class="col-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <div class="row justiyfy-content-between">
+         <div class="row justiyfy-content-between">
               <h4 class="card-title col-10">Sales</h4>
-              <div class="btn btn-primary col-1 mb-5">
+              <a class="btn btn-primary col-1 mb-5" href="./add.php">
                 <i class="mdi mdi-plus"></i>
-              </div>
+              </a>
             </div>
             <div class="table-responsive">
               <table class="table">
@@ -33,15 +33,19 @@ include pathOf('includes/sidebar.php');
                     <td>Jacob</td>
                     <td>Jacob</td>
                     <td>53275531</td>
-                    <td>
-                      <div class="btn btn-primary me-2">
-                        <i class="mdi mdi-table-edit"></i>
-                      </div>
+                     <td>
+                      <a href="./update.php">
+                        <div class="btn btn-primary me-2">
+                          <i class="mdi mdi-table-edit"></i>
+                        </div>
+                      </a>
                     </td>
                     <td>
-                      <div class="btn btn-primary me-2">
-                        <i class="mdi mdi-delete-variant"></i>
-                      </div>
+                      <a href="#">
+                        <div class="btn btn-primary me-2">
+                          <i class="mdi mdi-delete-variant"></i>
+                        </div>
+                      </a>
                     </td>
                   </tr>
                 </tbody>
