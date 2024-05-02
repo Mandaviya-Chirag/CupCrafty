@@ -1,10 +1,10 @@
 <?php
 require ('../../includes/init.php');
 $cities = select("SELECT * FROM City");
+$Id = $_POST["Id"];
+$result = selectOne("SELECT * FROM branchdetails WHERE Id = $Id");
 include pathOf('includes/header.php');
-include pathOf('includes/navbar.php');
-$Id = $_GET["Id"];
-$result = select("SELECT * FROM branchdetails WHERE Id = $Id");
+include pathOf('includes/sidebar.php');
 ?>
 
 <div class="main-panel">
@@ -18,17 +18,27 @@ $result = select("SELECT * FROM branchdetails WHERE Id = $Id");
             <form class="forms-sample">
               <div class="form-group">
                 <div class="form-group">
-                  <label for="">Name</label>
-                  <input type="text" class="form-control" id="ownername" placeholder="Enter name" autofocus />
+                   <input type="hidden" class="form-control" id="Id" value="<?= $result['Id'] ?>"/>
+                  <label for="">Owner</label>
+                  <input type="text" class="form-control" id="OwnerName" value="<?= $result['OwnerName'] ?>"
+                    autofocus />
+                </div>
+                <div>
+                  <label for="">CityName</label>
+                  <select name="" id="cityId">
+                    <?php foreach ($cities as $city): ?>
+                      <option value="<?= $city['Id'] ?>"><?= $city['Name'] ?></option>
+                    <?php endforeach; ?>
+                  </select>
                 </div>
                 <div class="form-group">
-                  <label for="">Squarefeet</label>
-                  <input type="text" class="form-control" id="squarefeet" placeholder="Enter squarefeet" />
+                  <label for="">SquareFeet</label>
+                  <input type="number" class="form-control" id="SquareFeet" value="<?= $result['SquareFeet'] ?>" />
                 </div>
-                <label for="">Adress</label>
-                <input type="text" class="form-control" id="address" placeholder="Enter address"/>
+                <label for="">Address</label>
+                <input type="text" class="form-control" id="Address" value="<?= $result['Address'] ?>" />
               </div>
-              <button type="submit" class="btn btn-primary me-2">
+              <button type="submit" class="btn btn-primary me-2" onclick="updateData()">
                 Update
               </button>
               <button class="btn btn-light">Cancel</button>
@@ -45,19 +55,29 @@ $result = select("SELECT * FROM branchdetails WHERE Id = $Id");
 include pathOf('/includes/footer.php');
 include pathOf('/includes/script.php');
 ?>
+
+<script>
+
+  function updateData() {
+    let data = {
+      Id: $("#Id").val(),
+      OwnerName: $("#OwnerName").val(),
+      cityId: $("#cityId").val(),
+      SquareFeet: $("#SquareFeet").val(),
+      Address: $("#Address").val(),
+    }
+    $.ajax({
+      url: "../../api/branchdetails/update.php",
+      method: "POST",
+      data: data,
+      success: function (response) {
+        alert('BranchDetails Updated!');
+        window.location.href = './index.php';
+      }
+    })
+  }
+
+</script>
 <?php
-function deleteBranch(Id) {
-            if (confirm("sure you want to delete this branch"));
-            $.ajax({
-                url: "../../api/branchdetails/delete.php",
-                method: "POST",
-                data: {
-                    Id: Id
-                },
-                success: function (response) {
-                    alert('BranchDetails Deleted');
-                }
-            })
-        }
 include pathOf('/includes/pageEnd.php');
 ?>

@@ -1,5 +1,7 @@
 <?php
 require '../../includes/init.php';
+
+
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
 ?>

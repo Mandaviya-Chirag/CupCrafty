@@ -29,8 +29,8 @@ include pathOf('includes/sidebar.php');
                 </select>
                 </div>
                 <div class="form-group">
-                  <label for="">Squarefeet</label>
-                  <input type="text" class="form-control" id="Squarefeet" name="Squarefeet" placeholder="Enter Squarefeet"/>
+                  <label for="">SquareFeet</label>
+                  <input type="text" class="form-control" id="SquareFeet" name="SquareFeet" placeholder="Enter SquareFeet"/>
                 </div>
                 <label for="">Address</label>
                 <input type="text" class="form-control" id="Address" name="Address" placeholder="Enter Address"/>
@@ -56,7 +56,7 @@ include pathOf('/includes/script.php');
   function sendData() {
     var OwnerName = $('#OwnerName').val();
     var cityId = $('#cityId').val();
-    var Squarefeet = $('#Squarefeet').val();
+    var SquareFeet = $('#SquareFeet').val();
     var Address =  $('#Address').val();
 
 
@@ -66,7 +66,7 @@ include pathOf('/includes/script.php');
       data: {
         OwnerName :OwnerName,
         cityId :cityId,
-        Squarefeet :Squarefeet,
+        SquareFeet :SquareFeet,
         Address :Address
       },
       success: function (response) {
