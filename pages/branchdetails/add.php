@@ -22,7 +22,7 @@ include pathOf('includes/sidebar.php');
                 </div>
                 <div>
                 <label for="">CityName</label>
-                <select name="" id="cityId">
+                <select name="" id="cityId" class="form-select" >
                   <?php foreach ($cities as $city): ?>
                     <option value="<?= $city['Id'] ?>"><?= $city['Name'] ?></option>
                   <?php endforeach; ?>

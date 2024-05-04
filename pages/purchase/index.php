@@ -1,5 +1,7 @@
 <?php
 require '../../includes/init.php';
+$purchases = select("SELECT Purchase.Id, Purchase.Quantity, BranchDetails.Id AS 'BranchDetailsId', Products.Id AS 'ProductId' FROM Purchase INNER JOIN BranchDetails ON Purchase.BranchId = BranchDetails.Id INNER JOIN Products ON Purchase.ProductId = Products.Id");
+$index = 0;
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
 ?>
@@ -9,7 +11,7 @@ include pathOf('includes/sidebar.php');
       <div class="col-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-          <div class="row justiyfy-content-between">
+            <div class="row justiyfy-content-between">
               <h4 class="card-title col-10">Purchase</h4>
               <a class="btn btn-primary col-1 mb-5" href="./add.php">
                 <i class="mdi mdi-plus"></i>
@@ -20,34 +22,36 @@ include pathOf('includes/sidebar.php');
                 <thead>
                   <tr>
                     <th>Sr.no.</th>
-                    <th>BranchName</th>
-                    <th>ProductName</th>
+                    <th>Branch</th>
+                    <th>Product</th>
                     <th>Quantity</th>
                     <th>Modify</th>
                     <th>Delete</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Jacob</td>
-                    <td>Jacob</td>
-                    <td>53275531</td>
-                    <td>
-                      <a href="./update.php">
-                        <div class="btn btn-primary me-2">
-                          <i class="mdi mdi-table-edit"></i>
-                        </div>
-                      </a>
-                    </td>
-                    <td>
-                      <a href="#">
-                        <div class="btn btn-primary me-2">
+                  <?php foreach ($purchases as $purchase): ?>
+                    <tr>
+                      <td><?= $index += 1 ?></td>
+                      <td><?= $purchase['BranchDetailsId'] ?></td>
+                      <td><?= $purchase['ProductId'] ?></td>
+                      <td><?= $purchase['Quantity'] ?></td>
+                      <form action="./update.php" method="post">
+                        <td>
+                          <input type="hidden" name="Id" id="Id" value="<?= $purchase['Id'] ?>">
+                          <button type="submit" class="btn btn-primary btn-circle mb-2">
+                            <i class="mdi mdi-table-edit"></i>
+                          </button>
+                        </td>
+                      </form>
+                      <td>
+                        <button type="button" class="btn btn-primary btn-circle mb-2"
+                          onclick="deletePurchase(<?= $purchase['Id'] ?>)">
                           <i class="mdi mdi-delete-variant"></i>
-                        </div>
-                      </a>
-                    </td>
-                  </tr>
+                        </button>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
                 </tbody>
               </table>
             </div>
@@ -56,8 +60,26 @@ include pathOf('includes/sidebar.php');
       </div>
     </div>
   </div>
-  <?php
-  include pathOf('/includes/footer.php');
-  include pathOf('/includes/script.php');
-  include pathOf('/includes/pageEnd.php');
-  ?>
+ <?php
+    include pathOf('includes/footer.php');
+    include pathOf('includes/script.php');
+    ?>
+    <script>
+        function deletePurchase(Id) {
+            if (confirm("sure you want to delete this purchase"));
+            $.ajax({
+                url: "../../api/purchase/delete.php",
+                method: "POST",
+                data: {
+                    Id: Id
+                },
+                success: function (response) {
+                    alert('Purchase Deleted!');
+                    window.location.href = './index.php';
+                }
+            })
+        }
+    </script>
+<?php
+include pathOf('includes/pageEnd.php');
+?>

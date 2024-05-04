@@ -21,7 +21,7 @@ include pathOf('includes/sidebar.php');
               </div>
               <div>
                 <label for="">BranchName</label>
-                <select name="" id="BranchId">
+                <select name="" id="BranchId" class="form-select" >
                   <?php foreach ($branchDetails as $branchDetail): ?>
                     <option value="<?= $branchDetail['Id'] ?>"><?= $branchDetail['Id'] ?></option>
                   <?php endforeach; ?>
