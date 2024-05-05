@@ -32,6 +32,7 @@ CREATE TABLE
         `RoleId` INT NOT NULL,
         `BranchId` INT NOT NULL,
         `Name` VARCHAR(255) NOT NULL,
+        `Password` VARCHAR(250) NOT NULL,
         `Mobile` VARCHAR(255) NOT NULL,
         `Email` VARCHAR(255) NOT NULL,
         `Address` VARCHAR(255) NOT NULL,
@@ -45,18 +46,18 @@ CREATE TABLE
         `Name` VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE 
-    `Permissions` (
-        `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        `UserId` INT NOT NULL,
-        `ModuleId` INT NOT NULL,
-        `AddPermission` INT NOT NULL,
-        `EditPermission` INT NOT NULL,
-        `DeletePermission` INT NOT NULL,
-        `ViewPermission` INT NOT NULL,
-        FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`),
-        FOREIGN KEY (`ModuleId`) REFERENCES `Modules` (`Id`)
-);
+    CREATE TABLE 
+        `Permissions` (
+            `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+            `UserId` INT NOT NULL,
+            `ModuleId` INT NOT NULL,
+            `AddPermission` INT NOT NULL,
+            `EditPermission` INT NOT NULL,
+            `DeletePermission` INT NOT NULL,
+            `ViewPermission` INT NOT NULL,
+            FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`),
+            FOREIGN KEY (`ModuleId`) REFERENCES `Modules` (`Id`)
+    );
 
 CREATE TABLE 
     `Categories` (
@@ -141,6 +142,7 @@ INSERT INTO
         BranchId,
         RoleId,
         Name,
+        Password,
         Mobile,
         Email,
         Address
@@ -150,6 +152,7 @@ VALUES
         1,
         1,
         'OwnerName',
+        'Admin',
         '7894561234',
         'Testing@gmail.com',
         'This is the testing address'
