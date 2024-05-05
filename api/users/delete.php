@@ -1,16 +1,10 @@
 <?php
 
-include ('../includes/init.php');
-
-$id = $_GET['id'];
-
-$q = "DELETE FROM just WHERE `id` = $id";
-$params = [$id];
-
-$statement = $connection->prepare($q);
-$data = $statement->execute($params);
-
-echo "deleted successfully !!";
-
-
+require ('../../includes/init.php');
+$Id = $_POST['Id'];
+$query = "DELETE FROM users WHERE Id = ?";
+$param = [$Id];
+$result = execute($query, $param);
+header('location:../../pages/users/index.php');
+?>
 
