@@ -37,8 +37,7 @@ include pathOf('includes/sidebar.php');
                                  <tbody>
                                         <?php foreach ($permissions as $permission): ?>
                                             <tr>
-                                                <input type="text" value="<?= $userPermissionId ?>" id="userId">
-                                                <input type="text" value="<?= $permission['Id'] ?>" id="userId">
+                                                <input type="hidden" value="<?= $userPermissionId ?>" id="userId">
                                                 <td><?= $index += 1 ?></td>
                                                 <td><?= $permission['ModuleName'] ?></td>
                                                 <td><input type="checkbox" id="addPermission"
@@ -77,7 +76,7 @@ include pathOf('includes/sidebar.php');
             let addPermission = permission == 1 ? 0 : 1;
 
             let data = {
-                userId: $('#UserId').val(),
+                userId: $('#userId').val(),
                 moduleId: moduleId,
                 addPermission: addPermission
             }
@@ -95,7 +94,7 @@ include pathOf('includes/sidebar.php');
             let editPermission = permission == 1 ? 0 : 1;
             
             let data = {
-                userId: $('#UserId').val(),
+                userId: $('#userId').val(),
                 moduleId: moduleId,
                 editPermission: editPermission
             }
@@ -113,7 +112,7 @@ include pathOf('includes/sidebar.php');
             let deletePermission = permission == 1 ? 0 : 1;
 
             let data = {
-                userId: $('#UserId').val(),
+                userId: $('#userId').val(),
                 moduleId: moduleId,
                 deletePermission: deletePermission
             }
@@ -131,7 +130,7 @@ include pathOf('includes/sidebar.php');
             let viewPermission = permission == 1 ? 0 : 1;
 
             let data = {
-                userId: $('#UserId').val(),
+                userId: $('#userId').val(),
                 moduleId: moduleId,
                 viewPermission: viewPermission
             }
