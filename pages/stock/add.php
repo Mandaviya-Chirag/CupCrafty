@@ -1,5 +1,9 @@
 <?php
 require '../../includes/init.php';
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('Stocks', $UserId);
+if ($permissions['AddPermission'] != 1)
+  header('Location: ./index');
 $branchDetails = select("SELECT * FROM branchDetails");
 $products = select("SELECT * FROM products");
 include pathOf('includes/header.php');
@@ -15,27 +19,27 @@ include pathOf('includes/sidebar.php');
             <h4 class="card-title">Stock Add</h4>
             <p class="card-description">Add new stock</p>
             <form class="forms-sample">
-              <label>Branch</label>
-               <div>
-                <select class="form-select" id="branchId">
+              <label class="col-md-2 col-form-label">Branch</label>
+              <div>
+                <select class="form-select" id="branchId" autofocus>
                   <?php foreach ($branchDetails as $branchDetail): ?>
-                      <option value="<?= $branchDetail['Id'] ?>"><?= $branchDetail['Id'] ?>
-                      </option>
+                    <option value="<?= $branchDetail['Id'] ?>"><?= $branchDetail['OwnerName'] ?>
+                    </option>
                   <?php endforeach; ?>
                 </select>
               </div>
               <div>
-                <label>Product</label>
+                <label class="col-md-2 col-form-label">Product</label>
                 <select class="form-select" id="productId">
                   <?php foreach ($products as $product): ?>
-                      <option value="<?= $product['Id'] ?>"><?= $product['Id'] ?></option>
+                    <option value="<?= $product['Id'] ?>"><?= $product['Name'] ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
               <div>
-                <label>Quantity</label>
+                <label class="col-md-2 col-form-label">Quantity</label>
                 <div>
-                  <input class="form-control" type="number" id="CurrentQuantity">
+                  <input class="form-control mb-3" type="number" id="CurrentQuantity">
                 </div>
               </div>
               <button type="submit" class="btn btn-primary me-2" onclick="sendData()">
@@ -62,12 +66,12 @@ include pathOf('includes/sidebar.php');
       };
 
       $.ajax({
-        url: "../../api/stock/insert.php",
+        url: "../../api/stock/insert",
         method: "POST",
         data: data,
         success: function (response) {
           alert("Stock Added!");
-          window.location.href = './index.php';
+          window.location.href = './index';
         }
       })
     }

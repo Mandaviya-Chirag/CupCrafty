@@ -1,9 +1,13 @@
 <?php
 require ('../../includes/init.php');
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('Stocks', $UserId);
+if ($permissions['EditPermission'] != 1)
+  header('Location: ./index');
 $branchDetails = select("SELECT * FROM BranchDetails");
 $products = select("SELECT * FROM Products");
 $Id = $_POST["Id"];
-$stocks = selectOne("SELECT * FROM stock WHERE Id = $Id");
+$stock = selectOne("SELECT * FROM stock WHERE Id = $Id");
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
 ?>
@@ -17,29 +21,29 @@ include pathOf('includes/sidebar.php');
             <h4 class="card-title">Stock</h4>
             <p class="card-description">Update stock</p>
             <form class="forms-sample">
-              <input class="form-control" type="hidden" id="Id" name="Id" value="<?= $stocks['Id'] ?>">
-              <label>Branch</label>
+              <input class="form-control" type="hidden" id="Id" name="Id" value="<?= $stock['Id'] ?>">
+              <label class="col-md-2 col-form-label">Branch</label>
               <div>
-                <select class="form-select" id="branchId">
+                <select class="form-select" id="branchId" autofocus>
                   <?php foreach ($branchDetails as $branchDetail): ?>
-                    <option value="<?= $branchDetail['Id'] ?>"><?= $branchDetail['Id'] ?>
+                    <option value="<?= $branchDetail['Id'] ?>"><?= $branchDetail['OwnerName'] ?>
                     </option>
                   <?php endforeach; ?>
                 </select>
               </div>
               <div>
-                <label>Product</label>
+                <label class="col-md-2 col-form-label">Product</label>
                 <select class="form-select" id="productId">
                   <?php foreach ($products as $product): ?>
-                    <option value="<?= $product['Id'] ?>"><?= $product['Id'] ?></option>
+                    <option value="<?= $product['Id'] ?>"><?= $product['Name'] ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
               <div>
-                <label>Quantity</label>
-                <div>
-                  <input class="form-control" type="number" id="CurrentQuantity" value="<?= $stocks['Quantity'] ?>">
-                </div>
+                <label class="col-md-2 col-form-label">Quantity</label>
+               <div>
+                  <input class="form-control mb-3" type="number" id="CurrentQuantity" value="<?= $stock['CurrentQuantity'] ?>">
+              </div>
               </div>
               <button type="submit" class="btn btn-primary me-2" onclick="updateData()">
                 Update
@@ -66,12 +70,12 @@ include pathOf('includes/sidebar.php');
       };
 
       $.ajax({
-        url: "../../api/stock/update.php",
+        url: "../../api/stock/update",
         method: "POST",
         data: data,
         success: function (response) {
           alert("Stock Updated!");
-          window.location.href = './index.php';
+          window.location.href = './index';
         }
       })
     }
