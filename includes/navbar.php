@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Star Admin2 </title>
+    <title>CupCrafty</title>
     <link rel="stylesheet" href="<?= urlOf('assets/vendors/feather/feather.css') ?>">
     <link rel="stylesheet" href="<?= urlOf('assets/vendors/mdi/css/materialdesignicons.min.css') ?>">
     <link rel="stylesheet" href="<?= urlOf('assets/vendors/ti-icons/css/themify-icons.css') ?>">
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="<?= urlOf('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css') ?>">
     <link rel="stylesheet" href="<?= urlOf('assets/js/select.dataTables.min.css') ?>">
     <link rel="stylesheet" href="<?= urlOf('assets/css/vertical-layout-light/style.css') ?>">
-    <link rel="shortcut icon" href="<?= urlOf('assets/images/favicon.png') ?>" />
+    <link rel="shortcut icon" href="<?= urlOf('assets/images/faces/face8.png') ?>" />
 </head>
 
 <body>
@@ -24,3 +24,10 @@
             </div>
     </div>
     </nav>
+<?php
+$url = urlOf('pages/login');
+if (!isset($_SESSION['loggedIn'])) {
+    header("Location: $url");
+    exit;
+}
+?>
