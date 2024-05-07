@@ -1,8 +1,9 @@
 <?php
 require '../../includes/init.php';
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('BranchDetails', $UserId);
 $branchDetails = select("SELECT BranchDetails.Id, BranchDetails.Address, BranchDetails.SquareFeet, BranchDetails.OwnerName, City.Name FROM BranchDetails INNER JOIN City ON BranchDetails.CityId = City.Id");
 $index = 0;
-
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
 ?>
@@ -16,9 +17,11 @@ include pathOf('includes/sidebar.php');
           <div class="card-body">
             <div class="row justiyfy-content-between">
               <h4 class="card-title col-10">BranchDetails</h4>
-              <a class="btn btn-primary col-1 mb-5" href="./add.php">
-                <i class="mdi mdi-plus"></i>
-              </a>
+              <?php if ($permissions['AddPermission'] == 1) { ?>
+                <a class="btn btn-primary col-1 mb-5" href="./add">
+                  <i class="mdi mdi-plus"></i>
+                </a>
+              <?php } ?>
             </div>
             <div class="table-responsive">
               <table class="table">
@@ -29,19 +32,25 @@ include pathOf('includes/sidebar.php');
                     <th>CityName</th>
                     <th>SquareFeet</th>
                     <th>Address</th>
-                    <th>Modify</th>
-                    <th>Delete</th>
+                    <?php if ($permissions['EditPermission'] == 1) { ?>
+                      <th>Modify</th>
+                    <?php } ?>
+                    <?php if ($permissions['DeletePermission'] == 1) { ?>
+                      <th>Delete</th>
+                    <?php } ?>
                   </tr>
                 </thead>
                 <tbody>
-                  <?php foreach ($branchDetails as $branchDetail): ?>
+                   <?php if ($permissions['ViewPermission'] == 1) {
+                  foreach ($branchDetails as $branchDetail): ?>
                     <tr>
                       <td><?= $index += 1 ?></td>
                       <td><?= $branchDetail['OwnerName'] ?></td>
                       <td><?= $branchDetail['Name'] ?></td>
                       <td><?= $branchDetail['SquareFeet'] ?></td>
                       <td><?= $branchDetail['Address'] ?></td>
-                      <form action="./update.php" method="post">
+                       <?php if ($permissions['EditPermission'] == 1) { ?>
+                      <form action="./update" method="post">
                         <td>
                           <input type="hidden" name="Id" id="Id" value="<?= $branchDetail['Id'] ?>">
                           <button type="submit" class="btn btn-primary me-2">
@@ -49,14 +58,18 @@ include pathOf('includes/sidebar.php');
                           </button>
                         </td>
                       </form>
+                      <?php } ?>
+                    <?php if ($permissions['DeletePermission'] == 1) { ?>
                       <td>
                         <button type="submit" class="btn btn-primary me-2"
                           onclick="deleteBranch(<?= $branchDetail['Id'] ?>)">
                           <i class="mdi mdi-delete-variant"></i>
                         </button>
                       </td>
+                    <?php } ?>
                     </tr>
                   <?php endforeach; ?>
+                   <?php } ?>
                 </tbody>
               </table>
             </div>
@@ -70,24 +83,25 @@ include pathOf('includes/sidebar.php');
   include pathOf('/includes/script.php');
   ?>
 
-<script>
+  <script>
 
-  function deleteBranch(Id){
-    if (confirm("are you sure you want to delete this branch"));
-    $.ajax({
-        url : "../../api/branchdetails/delete.php",
-        method : "POST",
-        data : {
-          Id : Id
-        },
-        success : function(response){
-          alert('Branchdetails Deleted!');
-          window.location.href = './index.php';
-        }
-    }) 
-  }
+    function deleteBranch(Id) {
+      if (confirm("Are you sure you want to delete this branch?")) {
+        $.ajax({
+          url: "../../api/branchdetails/delete",
+          method: "POST",
+          data: {
+            Id: Id
+          },
+          success: function (response) {
+            alert('Branch details deleted!');
+            window.location.href = './index';
+          }
+        });
+      }
+    }
 
-</script>
+  </script>
 
   <?php
   include pathOf('/includes/pageEnd.php');

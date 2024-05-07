@@ -1,6 +1,9 @@
 <?php
 require '../../includes/init.php';
-
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('BranchDetails', $UserId);
+if ($permissions['AddPermission'] != 1)
+  header('Location: ./index');
 $cities = select("SELECT * FROM city");
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
@@ -18,22 +21,23 @@ include pathOf('includes/sidebar.php');
               <div class="form-group">
                 <div class="form-group">
                   <label for="">Owner</label>
-                  <input type="text" class="form-control" id="OwnerName" placeholder="Enter Name" autofocus/>
+                  <input type="text" class="form-control" id="OwnerName" placeholder="Enter Name" autofocus />
                 </div>
                 <div>
-                <label for="">CityName</label>
-                <select name="" id="cityId" class="form-select" >
-                  <?php foreach ($cities as $city): ?>
-                    <option value="<?= $city['Id'] ?>"><?= $city['Name'] ?></option>
-                  <?php endforeach; ?>
-                </select>
+                  <label for="">CityName</label>
+                  <select name="" id="cityId" class="form-select mb-3">
+                    <?php foreach ($cities as $city): ?>
+                      <option value="<?= $city['Id'] ?>"><?= $city['Name'] ?></option>
+                    <?php endforeach; ?>
+                  </select>
                 </div>
                 <div class="form-group">
                   <label for="">SquareFeet</label>
-                  <input type="text" class="form-control" id="SquareFeet" name="SquareFeet" placeholder="Enter SquareFeet"/>
+                  <input type="text" class="form-control" id="SquareFeet" name="SquareFeet"
+                    placeholder="Enter SquareFeet" />
                 </div>
                 <label for="">Address</label>
-                <input type="text" class="form-control" id="Address" name="Address" placeholder="Enter Address"/>
+                <input type="text" class="form-control" id="Address" name="Address" placeholder="Enter Address" />
               </div>
               <button type="submit" class="btn btn-primary me-2" onclick="sendData()">
                 Add
@@ -57,21 +61,21 @@ include pathOf('/includes/script.php');
     var OwnerName = $('#OwnerName').val();
     var cityId = $('#cityId').val();
     var SquareFeet = $('#SquareFeet').val();
-    var Address =  $('#Address').val();
+    var Address = $('#Address').val();
 
 
     $.ajax({
-      url: '../../api/branchdetails/insert.php',
+      url: '../../api/branchdetails/insert',
       method: 'POST',
       data: {
-        OwnerName :OwnerName,
-        cityId :cityId,
-        SquareFeet :SquareFeet,
-        Address :Address
+        OwnerName: OwnerName,
+        cityId: cityId,
+        SquareFeet: SquareFeet,
+        Address: Address
       },
       success: function (response) {
         alert("Branchdetails Added");
-        window.location.href = './index.php';
+        window.location.href = './index';
       }
 
     })

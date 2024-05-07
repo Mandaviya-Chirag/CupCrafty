@@ -1,8 +1,12 @@
 <?php
 require ('../../includes/init.php');
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('BranchDetails', $UserId);
+if ($permissions['EditPermission'] != 1)
+  header('Location: ./index');
 $cities = select("SELECT * FROM City");
 $Id = $_POST["Id"];
-$result = selectOne("SELECT * FROM branchdetails WHERE Id = $Id");
+$branchDetail = selectOne("SELECT * FROM branchdetails WHERE Id = $Id");
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
 ?>
@@ -18,14 +22,14 @@ include pathOf('includes/sidebar.php');
             <form class="forms-sample">
               <div class="form-group">
                 <div class="form-group">
-                   <input type="hidden" class="form-control" id="Id" value="<?= $result['Id'] ?>"/>
+                  <input type="hidden" class="form-control" id="Id" value="<?= $branchDetail['Id'] ?>" />
                   <label for="">Owner</label>
-                  <input type="text" class="form-control" id="OwnerName" value="<?= $result['OwnerName'] ?>"
+                  <input type="text" class="form-control" id="OwnerName" value="<?= $branchDetail['OwnerName'] ?>"
                     autofocus />
                 </div>
                 <div>
                   <label for="">CityName</label>
-                  <select name="" id="cityId">
+                  <select name="" id="cityId" class="form-select mb-3" >
                     <?php foreach ($cities as $city): ?>
                       <option value="<?= $city['Id'] ?>"><?= $city['Name'] ?></option>
                     <?php endforeach; ?>
@@ -33,10 +37,11 @@ include pathOf('includes/sidebar.php');
                 </div>
                 <div class="form-group">
                   <label for="">SquareFeet</label>
-                  <input type="number" class="form-control" id="SquareFeet" value="<?= $result['SquareFeet'] ?>" />
+                  <input type="number" class="form-control" id="SquareFeet"
+                    value="<?= $branchDetail['SquareFeet'] ?>" />
                 </div>
                 <label for="">Address</label>
-                <input type="text" class="form-control" id="Address" value="<?= $result['Address'] ?>" />
+                <input type="text" class="form-control" id="Address" value="<?= $branchDetail['Address'] ?>" />
               </div>
               <button type="submit" class="btn btn-primary me-2" onclick="updateData()">
                 Update
@@ -67,12 +72,12 @@ include pathOf('/includes/script.php');
       Address: $("#Address").val(),
     }
     $.ajax({
-      url: "../../api/branchdetails/update.php",
+      url: "../../api/branchdetails/update",
       method: "POST",
       data: data,
       success: function (response) {
         alert('BranchDetails Updated!');
-        window.location.href = './index.php';
+        window.location.href = './index';
       }
     })
   }
