@@ -1,5 +1,10 @@
 <?php
 require '../../includes/init.php';
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('Users', $UserId);
+if ($permissions['AddPermission'] != 1)
+  header('Location: ./index');
+$branchDetails = select("SELECT * FROM BranchDetails");
 $roles = select("SELECT * FROM Roles");
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
@@ -16,19 +21,31 @@ include pathOf('includes/sidebar.php');
             <form class="forms-sample">
               <div class="form-group">
                 <label for="">Role</label>
-                <select name="" id="roleId" class="form-select" >
+                <select name="" id="RoleId" class="form-select">
                   <?php foreach ($roles as $role): ?>
-                    <option value="<?= $role['Id'] ?>"><?= $role['Id'] ?></option>
+                    <option value="<?= $role['Id'] ?>"><?= $role['Name'] ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="">Branch</label>
+                <select name="" class="form-select" id="BranchId" autofocus>
+                  <?php foreach ($branchDetails as $branchDetail): ?>
+                    <option value="<?= $branchDetail['Id'] ?>"><?= $branchDetail['OwnerName'] ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
               <div class="form-group">
                 <label for="">Name</label>
-                <input type="text" class="form-control" id="Name" placeholder="Enter Name" autofocus />
+                <input type="text" class="form-control" id="Name" placeholder="Enter Name" />
+              </div>
+              <div class="form-group">
+                <label for="">Password</label>
+                <input type="text" class="form-control" id="Password" placeholder="Password" />
               </div>
               <div class="form-group">
                 <label for="">Mobile</label>
-                <input type="Number" class="form-control" id="Mobile" placeholder="Enter Number" />
+                <input type="text" class="form-control" id="Mobile" placeholder="Enter Number" />
               </div>
               <div class="form-group">
                 <label for="">Email</label>
@@ -49,35 +66,37 @@ include pathOf('includes/sidebar.php');
     </div>
   </div>
 
-<?php
-include pathOf('/includes/footer.php');
-include pathOf('/includes/script.php');
-?>
-<script>
-  function sendData() {
-    let data = {
-       RoleId : $('#RoleId').val(),
-       Name : $('#Name').val(),
-       Mobile : $('#Mobile').val(),
-       Email : $('#Email').val(),
-       Address : $('#Address').val(),
-      
-    };
+  <?php
+  include pathOf('/includes/footer.php');
+  include pathOf('/includes/script.php');
+  ?>
+  <script>
+    function sendData() {
+      let data = {
+        RoleId: $('#RoleId').val(),
+        BranchId: $('#BranchId').val(),
+        Name: $('#Name').val(),
+        Password: $('#Password').val(),
+        Mobile: $('#Mobile').val(),
+        Email: $('#Email').val(),
+        Address: $('#Address').val(),
+
+      };
 
 
-    $.ajax({
-      url: '../../api/users/insert.php',
-      method: 'POST',
-      data: data,
-      success: function (response) {
-        alert("Users Added");
-        window.location.href = './index.php';
-      }
+      $.ajax({
+        url: '../../api/users/insert',
+        method: 'POST',
+        data: data,
+        success: function (response) {
+          alert("Users Added");
+          window.location.href = './index';
+        }
 
-    })
-  }
-</script>
+      })
+    }
+  </script>
 
-<?php
-include pathOf('/includes/pageEnd.php');
-?>
+  <?php
+  include pathOf('/includes/pageEnd.php');
+  ?>
