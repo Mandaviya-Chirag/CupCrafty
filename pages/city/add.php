@@ -1,5 +1,9 @@
 <?php
 require '../../includes/init.php';
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('City', $UserId);
+if ($permissions['AddPermission'] != 1)
+  header('Location: ./index');
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
 ?>
@@ -15,7 +19,7 @@ include pathOf('includes/sidebar.php');
             <form class="forms-sample">
               <div class="form-group">
                 <label for="">Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" autofocus/>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" autofocus />
               </div>
               <button type="submit" class="btn btn-primary me-2" onclick="sendData()">
                 Add
@@ -35,21 +39,21 @@ include pathOf('/includes/script.php');
 ?>
 
 <script>
-    function sendData() {
-        var name = $("#name").val();
+  function sendData() {
+    var name = $("#name").val();
 
-        $.ajax({
-            url: "../../api/city/insert.php",
-            method: "POST",
-            data: {
-                name: name,
-            },
-            success: function (response) {
-                alert("City Added");
-                window.location.href = './index.php';
-            }
-        })
-    }
+    $.ajax({
+      url: "../../api/city/insert",
+      method: "POST",
+      data: {
+        name: name,
+      },
+      success: function (response) {
+        alert("City Added");
+        window.location.href = './index';
+      }
+    })
+  }
 </script>
 
 <?php

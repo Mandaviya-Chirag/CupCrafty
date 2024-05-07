@@ -1,15 +1,15 @@
 <?php
-require '../../includes/init.php';
+require ('../../includes/init.php');
+
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('City', $UserId);
+if ($permissions['EditPermission'] != 1)
+  header('Location: ./index');
+
+$Id = $_POST["Id"];
+$cities = selectOne("SELECT * FROM city WHERE Id = $Id");
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
-?>
-
-<?php
-
-$id = $_GET["id"];
-$query = "SELECT * FROM city WHERE Id = $id";
-$rows = selectOne($query);
-
 ?>
 
 <div class="main-panel">
@@ -22,12 +22,11 @@ $rows = selectOne($query);
             <p class="card-description">Update City</p>
             <form class="forms-sample">
               <div class="form-group">
-                <label for="">Id</label>
-                <input type="text" class="form-control" id="Id" name="Id" readonly value="<?= $rows['Id'] ?>" autofocus>
+                <input type="hidden" class="form-control" id="Id" name="Id" readonly value="<?= $cities['Id'] ?>" autofocus>
               </div>
               <div class="form-group">
                 <label for="">Name</label>
-                <input type="text" class="form-control" id="Name" name="Name" value="<?= $rows['Name'] ?>"
+                <input type="text" class="form-control" id="Name" name="Name" value="<?= $cities['Name'] ?>"
                   placeholder="Enter Name">
               </div>
               <button type="submit" class="btn btn-primary me-2" onclick="updateData()">
@@ -53,7 +52,7 @@ include pathOf('/includes/script.php');
     var Name = $("#Name").val();
 
     $.ajax({
-      url: "../../api/city/update.php",
+      url: "../../api/city/update",
       method: "POST",
       data: {
         Id: Id,
@@ -61,7 +60,7 @@ include pathOf('/includes/script.php');
       },
       success: function (response) {
         alert("City Updated");
-        window.location.href = './index.php';
+        window.location.href = './index';
       }
     })
   }
