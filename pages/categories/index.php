@@ -1,14 +1,11 @@
 <?php
 require '../../includes/init.php';
+$categories = select("SELECT * FROM Categories");
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('Categories', $UserId);
+$index = 0;
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
-?>
-
-<?php
-
-$query = "SELECT * FROM categories";
-$rows = select($query);
-
 ?>
 
 <div class="main-panel">
@@ -17,11 +14,13 @@ $rows = select($query);
       <div class="col-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-          <div class="row justiyfy-content-between">
+            <div class="row justiyfy-content-between">
               <h4 class="card-title col-10">Categories</h4>
-              <a class="btn btn-primary col-1 mb-5" href="./add.php">
-                <i class="mdi mdi-plus"></i>
-              </a>
+              <?php if ($permissions['AddPermission'] == 1) { ?>
+                <a class="btn btn-primary col-1 mb-5" href="./add">
+                  <i class="mdi mdi-plus"></i>
+                </a>
+              <?php } ?>
             </div>
             <div class="table-responsive">
               <table class="table">
@@ -29,31 +28,41 @@ $rows = select($query);
                   <tr>
                     <th>Sr.no.</th>
                     <th>Name</th>
-                    <th>Modify</th>
-                    <th>Delete</th>
+                    <?php if ($permissions['EditPermission'] == 1) { ?>
+                      <th>Modify</th>
+                    <?php } ?>
+                    <?php if ($permissions['DeletePermission'] == 1) { ?>
+                      <th>Delete</th>
+                    <?php } ?>
                   </tr>
                 </thead>
                 <tbody>
-                <?php foreach($rows as $user): ?>
-                  <tr>
-                      <td><?= $user['Id'] ?></td>
-                      <td><?= $user['Name'] ?></td>
-                     <td>
-                      <a href="./update.php?id=<?= $user['Id'] ?>">
-                        <div class="btn btn-primary me-2">
-                          <i class="mdi mdi-table-edit"></i>
-                        </div>
-                      </a>
-                    </td>
-                    <td>
-                      <a href="../../api/categories/delete.php?id=<?= $user['Id'] ?>">
-                        <div class="btn btn-primary me-2">
-                          <i class="mdi mdi-delete-variant"></i>
-                        </div>
-                      </a>
-                    </td>
-                  </tr>
-                  <?php endforeach; ?>
+                  <?php if ($permissions['ViewPermission'] == 1) {
+                    foreach ($categories as $category): ?>
+                      <tr>
+                        <td><?= $index += 1 ?></td>
+                        <td><?= $category['Name'] ?></td>
+                        <?php if ($permissions['EditPermission'] == 1) { ?>
+                          <form action="./update" method="post">
+                            <td>
+                              <input type="hidden" name="Id" id="Id" value="<?= $category['Id'] ?>">
+                              <button type="submit" class="btn btn-primary btn-circle mb-2">
+                                <i class="mdi mdi-table-edit"></i>
+                              </button>
+                            </td>
+                          </form>
+                        <?php } ?>
+                        <?php if ($permissions['DeletePermission'] == 1) { ?>
+                          <td>
+                            <button type="submit" class="btn btn-primary btn-circle mb-2"
+                              onclick="deleteCategory(<?= $category['Id'] ?>)">
+                              <i class="mdi mdi-delete-variant"></i>
+                            </button>
+                          </td>
+                        <?php } ?>
+                      </tr>
+                    <?php endforeach;
+                  } ?>
                 </tbody>
               </table>
             </div>
@@ -65,5 +74,27 @@ $rows = select($query);
   <?php
   include pathOf('/includes/footer.php');
   include pathOf('/includes/script.php');
+  ?>
+
+  <script>
+
+    function deleteCategory(Id) {
+      if (confirm("Are you sure you want to delete this Category?")) {
+        $.ajax({
+          url: "../../api/categories/delete",
+          method: "POST",
+          data: {
+            Id: Id
+          },
+          success: function (response) {
+            alert('Category  deleted!');
+            window.location.href = './index';
+          }
+        });
+      }
+    }
+
+  </script>
+  <?php
   include pathOf('/includes/pageEnd.php');
   ?>

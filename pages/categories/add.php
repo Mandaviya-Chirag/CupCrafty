@@ -1,7 +1,9 @@
 <?php
 require '../../includes/init.php';
-
-
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('Categories', $UserId);
+if ($permissions['AddPermission'] != 1)
+  header('Location: ./index');
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
 ?>
@@ -41,14 +43,14 @@ include pathOf('/includes/script.php');
     var Name = $("#Name").val();
 
     $.ajax({
-      url: "../../api/categories/insert.php",
+      url: "../../api/categories/insert",
       method: "POST",
       data: {
         Name: Name,
       },
       success: function (response) {
         alert("Categorie Added");
-        window.location.href = './index.php';
+        window.location.href = './index';
       }
     })
   }
