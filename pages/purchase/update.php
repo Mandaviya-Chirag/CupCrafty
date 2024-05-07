@@ -1,5 +1,9 @@
 <?php
 require ('../../includes/init.php');
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('Purchase', $UserId);
+if ($permissions['EditPermission'] != 1)
+  header('Location: ./index');
 $branchDetails = select("SELECT * FROM BranchDetails");
 $products = select("SELECT * FROM Products");
 $Id = $_POST["Id"];
@@ -18,27 +22,27 @@ include pathOf('includes/sidebar.php');
             <p class="card-description">Update purchase</p>
             <form class="forms-sample">
               <input class="form-control" type="hidden" id="Id" name="Id" value="<?= $purchase['Id'] ?>">
-              <label>Branch</label>
+              <label class="col-md-2 col-form-label">Branch</label>
               <div>
-                <select class="form-select" id="branchId">
+                <select class="form-select" id="branchId" autofocus>
                   <?php foreach ($branchDetails as $branchDetail): ?>
-                    <option value="<?= $branchDetail['Id'] ?>"><?= $branchDetail['Id'] ?>
+                    <option value="<?= $branchDetail['Id'] ?>"><?= $branchDetail['OwnerName'] ?>
                     </option>
                   <?php endforeach; ?>
                 </select>
               </div>
               <div>
-                <label>Product</label>
+                <label class="col-md-2 col-form-label">Product</label>
                 <select class="form-select" id="productId">
                   <?php foreach ($products as $product): ?>
-                    <option value="<?= $product['Id'] ?>"><?= $product['Id'] ?></option>
+                    <option value="<?= $product['Id'] ?>"><?= $product['Name'] ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
               <div>
-                <label>Quantity</label>
+                <label class="col-md-2 col-form-label">Quantity</label>
                 <div>
-                  <input class="form-control" type="number" id="Quantity" value="<?= $purchase['Quantity'] ?>">
+                  <input class="form-control mb-3" type="number" id="Quantity" value="<?= $purchase['Quantity'] ?>">
                 </div>
               </div>
               <button type="submit" class="btn btn-primary me-2" onclick="updateData()">
@@ -66,12 +70,12 @@ include pathOf('includes/sidebar.php');
       }
 
       $.ajax({
-        url: "../../api/purchase/update.php",
+        url: "../../api/purchase/update",
         method: "POST",
         data: data,
         success: function (response) {
           alert("Purchase Updated!");
-          window.location.href = './index.php';
+          window.location.href = './index';
         }
       })
     }

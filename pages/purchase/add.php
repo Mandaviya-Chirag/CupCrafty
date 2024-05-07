@@ -1,5 +1,9 @@
 <?php
 require '../../includes/init.php';
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('Purchase', $UserId);
+if ($permissions['AddPermission'] != 1)
+  header('Location: ./index');
 $branchDetails = select("SELECT * FROM branchDetails");
 $products = select("SELECT * FROM products");
 include pathOf('includes/header.php');
@@ -15,27 +19,27 @@ include pathOf('includes/sidebar.php');
             <h4 class="card-title">Purchase Add</h4>
             <p class="card-description">Add new Purchase</p>
             <form class="forms-sample">
-              <label>Branch</label>
+              <label class="col-md-2 col-form-label">Branch</label>
               <div>
-                <select class="form-select" id="branchId">
+                <select class="form-select" id="branchId" autofocus>
                   <?php foreach ($branchDetails as $branchDetail): ?>
-                    <option value="<?= $branchDetail['Id'] ?>"><?= $branchDetail['Id'] ?>
+                    <option value="<?= $branchDetail['Id'] ?>"><?= $branchDetail['OwnerName'] ?>
                     </option>
                   <?php endforeach; ?>
                 </select>
               </div>
               <div>
-                <label>Product</label>
+                <label class="col-md-2 col-form-label">Product</label>
                 <select class="form-select" id="productId">
                   <?php foreach ($products as $product): ?>
-                    <option value="<?= $product['Id'] ?>"><?= $product['Id'] ?></option>
+                    <option value="<?= $product['Id'] ?>"><?= $product['Name'] ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
-               <div>
-                <label>Quantity</label>
+              <div>
+                <label class="col-md-2 col-form-label">Quantity</label>
                 <div>
-                  <input class="form-control" type="number" id="Quantity">
+                  <input class="form-control mb-3" type="number" id="Quantity">
                 </div>
               </div>
               <button type="submit" class="btn btn-primary me-2" onclick="sendData()">
@@ -49,29 +53,29 @@ include pathOf('includes/sidebar.php');
     </div>
   </div>
 
-<?php
-include pathOf('includes/footer.php');
-include pathOf('includes/script.php');
-?>
-<script>
-  function sendData() {
-    let data = {
-      branchId: $("#branchId").val(),
-      Quantity: $("#Quantity").val(),
-      productId: $("#productId").val(),
-    }
-
-    $.ajax({
-      url: "../../api/purchase/insert.php",
-      method: "POST",
-      data: data,
-      success: function (response) {
-        alert("Purchase Added");
-        window.location.href = './index.php';
+  <?php
+  include pathOf('includes/footer.php');
+  include pathOf('includes/script.php');
+  ?>
+  <script>
+    function sendData() {
+      let data = {
+        branchId: $("#branchId").val(),
+        Quantity: $("#Quantity").val(),
+        productId: $("#productId").val(),
       }
-    })
-  }
-</script>
-<?php
-include pathOf('includes/pageEnd.php');
-?>
+
+      $.ajax({
+        url: "../../api/purchase/insert",
+        method: "POST",
+        data: data,
+        success: function (response) {
+          alert("Purchase Added");
+          window.location.href = './index';
+        }
+      })
+    }
+  </script>
+  <?php
+  include pathOf('includes/pageEnd.php');
+  ?>
