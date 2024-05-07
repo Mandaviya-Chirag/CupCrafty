@@ -1,5 +1,9 @@
 <?php
 require ('../../includes/init.php');
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('Sales', $UserId);
+if ($permissions['EditPermission'] != 1)
+  header('Location: ./index');
 $branchDetails = select("SELECT * FROM BranchDetails");
 $products = select("SELECT * FROM Products");
 $Id = $_POST["Id"];
@@ -15,32 +19,32 @@ include pathOf('includes/sidebar.php');
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Sales</h4>
-            <p class="card-description">update sale</p>
+            <p class="card-description">Update Sale</p>
             <form class="forms-sample">
               <input class="form-control" type="hidden" id="Id" name="Id" value="<?= $sales['Id'] ?>">
-              <label>Branch</label>
+              <label class="col-md-2 col-form-label">Branch</label>
               <div>
-                <select class="form-select" id="branchId">
+                <select class="form-select" id="branchId" autofocus>
                   <?php foreach ($branchDetails as $branchDetail): ?>
-                    <option value="<?= $branchDetail['Id'] ?>"><?= $branchDetail['Id'] ?>
+                    <option value="<?= $branchDetail['Id'] ?>"><?= $branchDetail['OwnerName'] ?>
                     </option>
                   <?php endforeach; ?>
                 </select>
               </div>
               <div>
-                <label>Product</label>
+                <label class="col-md-2 col-form-label">Product</label>
                 <select class="form-select" id="productId">
                   <?php foreach ($products as $product): ?>
-                    <option value="<?= $product['Id'] ?>"><?= $product['Id'] ?></option>
+                    <option value="<?= $product['Id'] ?>"><?= $product['Name'] ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
-                  <div>
-                <label>Quantity</label>
+              <div>
+                <label class="col-md-2 col-form-label">Quantity</label>
                 <div>
-                  <input class="form-control" type="number" id="Quantity" value="<?= $sales['Quantity'] ?>">
-                    </div>
-                  </div>
+                  <input class="form-control mb-3" type="number" id="Quantity" value="<?= $sales['Quantity'] ?>">
+                </div>
+              </div>
               <button type="submit" class="btn btn-primary me-2" onclick="updateData()">
                 Update
               </button>
@@ -66,12 +70,12 @@ include pathOf('includes/sidebar.php');
       };
 
       $.ajax({
-        url: "../../api/sales/update.php",
+        url: "../../api/sales/update",
         method: "POST",
         data: data,
         success: function (response) {
           alert("Sales Updated!");
-          window.location.href = './index.php';
+          window.location.href = './index';
         }
       })
     }
