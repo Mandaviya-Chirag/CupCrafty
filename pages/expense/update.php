@@ -1,5 +1,9 @@
 <?php
 require '../../includes/init.php';
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('Expenses', $UserId);
+if ($permissions['EditPermission'] != 1)
+  header('Location: ./index');
 $branchDetails = select("SELECT * FROM BranchDetails");
 $Id = $_POST["Id"];
 $expenses = selectOne("SELECT * FROM expense WHERE Id = $Id");
@@ -16,23 +20,23 @@ include pathOf('includes/sidebar.php');
             <h4 class="card-title">Expense</h4>
             <p class="card-description">Update expense</p>
             <form class="forms-sample">
-              <div class="form-group">
-                <input class="form-control" type="hidden" id="Id" name="Id" value="<?= $expenses['Id'] ?>">
-                <label for="">Name</label>
-                <input type="text" class="form-control" id="Name" placeholder="Enter Name" autofocus
-                  value="<?= $expenses['Name'] ?>" />
-              </div>
+              <input class="form-control" type="hidden" id="Id" name="Id" value="<?= $expenses['Id'] ?>">
               <div>
-                <label for="">BranchName</label>
-                <select class="form-select" name="" id="BranchId">
+                <label class="col-md-2 col-form-label">Branch</label>
+                <select class="form-select" name="" id="BranchId" autofocus>
                   <?php foreach ($branchDetails as $branchDetail): ?>
-                    <option value="<?= $branchDetail['Id'] ?>"><?= $branchDetail['Id'] ?></option>
+                    <option value="<?= $branchDetail['Id'] ?>"><?= $branchDetail['OwnerName'] ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
-              <div class="form-group">
-                <label for="">Amount</label>
-                <input type="number" class="form-control" id="Amount" placeholder="Enter Amount"
+              <div>
+                <label class="col-md-2 col-form-label">Name</label>
+                <input type="text" class="form-control" id="Name" placeholder="Enter Name" 
+                  value="<?= $expenses['Name'] ?>" />
+              </div>
+              <div>
+                <label class="col-md-2 col-form-label">Amount</label>
+                <input type="number" class="form-control mb-3" id="Amount" placeholder="Enter Amount"
                   value="<?= $expenses['Amount'] ?>" />
               </div>
               <button class="btn btn-primary me-2" onclick="updateData()">
@@ -62,12 +66,12 @@ include pathOf('/includes/script.php');
     }
 
     $.ajax({
-      url: "../../api/expense/update.php",
+      url: "../../api/expense/update",
       method: "POST",
       data: data,
       success: function (response) {
         alert("Expense Updated!");
-        window.location.href = './index.php';
+        window.location.href = './index';
       }
     })
   }

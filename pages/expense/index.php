@@ -1,6 +1,8 @@
 <?php
 require '../../includes/init.php';
-$expense = select("SELECT Expense.Id, Expense.Name, Expense.Amount, BranchDetails.Id AS BranchDetailsId FROM Expense INNER JOIN BranchDetails ON Expense.BranchId = BranchDetails.Id");
+$UserId = $_SESSION['UserId'];
+$permissions = authenticate('Expenses', $UserId);
+$expenses = select("SELECT expense.Id, expense.Name, expense.Amount, BranchDetails.OwnerName AS 'BranchDetailsOwnerName' FROM expense INNER JOIN BranchDetails ON expense.BranchId = BranchDetails.Id");
 $index = 0;
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
@@ -12,10 +14,12 @@ include pathOf('includes/sidebar.php');
         <div class="card">
           <div class="card-body">
             <div class="row justiyfy-content-between">
-              <h4 class="card-title col-10">Expense</h4>
-              <a class="btn btn-primary col-1 mb-5" href="./add.php">
-                <i class="mdi mdi-plus"></i>
-              </a>
+              <h4 class="card-title col-10">Expenses</h4>
+              <?php if ($permissions['AddPermission'] == 1) { ?>
+                <a class="btn btn-primary col-1 mb-5" href="./add">
+                  <i class="mdi mdi-plus"></i>
+                </a>
+              <?php } ?>
             </div>
             <div class="table-responsive">
               <table class="table">
@@ -25,34 +29,45 @@ include pathOf('includes/sidebar.php');
                     <th>Branch</th>
                     <th>Name</th>
                     <th>Amount</th>
-                    <th>Modify</th>
-                    <th>Delete</th>
+                    <?php if ($permissions['EditPermission'] == 1) { ?>
+                      <th>Modify</th>
+                    <?php } ?>
+                    <?php if ($permissions['DeletePermission'] == 1) { ?>
+                      <th>Delete</th>
+                    <?php } ?>
                   </tr>
                 </thead>
                 <tbody>
-                  <?php foreach ($expense as $expenses): ?>
-                    <tr>
-                      <td><?= $index += 1 ?></td>
-                      <td><?= $expenses['BranchDetailsId'] ?></td>
-                      <td><?= $expenses['Name'] ?></td>
-                      <td><?= $expenses['Amount'] ?></td>
-                      <form action="./update.php" method="post">
-                        <td>
-                          <input type="hidden" name="Id" id="Id" value="<?= $expenses['Id'] ?>">
-                          <button type="submit" class="btn btn-primary me-2">
-                            <i class="mdi mdi-table-edit"></i>
-                          </button>
-                        </td>
-                      </form>
-                      <td>
-                        <button type="submit" class="btn btn-primary me-2"
-                          onclick="deleteExpense(<?= $expenses['Id'] ?>)">
-                          <i class="mdi mdi-delete-variant"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  <?php endforeach; ?>
-                </tbody>
+                  <?php if ($permissions['ViewPermission'] == 1) {
+
+                    foreach ($expenses as $expense): ?>
+                      <tr>
+                        <td><?= $index += 1 ?></td>
+                        <td><?= $expense['BranchDetailsOwnerName'] ?></td>
+                        <td><?= $expense['Name'] ?></td>
+                        <td><?= $expense['Amount'] ?></td>
+                        <?php if ($permissions['EditPermission'] == 1) { ?>
+
+                          <form action="./update" method="post">
+                            <td>
+                              <input type="hidden" name="Id" id="Id" value="<?= $expense['Id'] ?>">
+                              <button type="submit" class="btn btn-primary btn-circle mb-2">
+                                <i class="mdi mdi-table-edit"></i>
+                              </button>
+                            </td>
+                          </form>
+                        <?php } ?>
+                        <?php if ($permissions['DeletePermission'] == 1) { ?>
+                          <td>
+                            <button type="button" class="btn btn-primary btn-circle mb-2"
+                              onclick="deleteExpense(<?= $expense['Id'] ?>)">
+                              <i class="mdi mdi-delete-variant"></i>
+                            </button>
+                          </td>
+                        <?php } ?>
+                      </tr>
+                    <?php endforeach;
+                  } ?>
               </table>
             </div>
           </div>
@@ -65,24 +80,25 @@ include pathOf('includes/sidebar.php');
   include pathOf('/includes/script.php');
   ?>
 
-  <script>
+<script>
 
-    function deleteExpense(Id) {
-      if (confirm("are you sure you want to delete this expense"));
+  function deleteExpense(Id) {
+    if (confirm("Are you sure you want to delete this Expense?")) {
       $.ajax({
-        url: "../../api/expense/delete.php",
+        url: "../../api/expense/delete",
         method: "POST",
         data: {
           Id: Id
         },
         success: function (response) {
-          alert('Expense Deleted!');
-          window.location.href = './index.php';
+          alert('Expense  deleted!');
+          window.location.href = './index';
         }
-      })
+      });
     }
+  }
 
-  </script>
+</script>
 
   <?php
   include pathOf('/includes/pageEnd.php');
