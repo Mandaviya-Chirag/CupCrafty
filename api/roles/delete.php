@@ -1,10 +1,16 @@
 <?php
 
 require ('../../includes/init.php');
-$Id = $_GET['id'];
+header('Content-Type: application/json');
+$Id = $_POST['Id'];
 $query = "DELETE FROM roles WHERE Id = ?";
 $param = [$Id];
 $result = execute($query, $param);
-header('location:../../pages/roles/index.php');
+
+if ($result)
+    echo json_encode(["success" => true]);
+else
+    echo json_encode(["success" => false]);
+
 
 ?>
