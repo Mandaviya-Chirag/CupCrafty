@@ -1,6 +1,6 @@
 # CupCrafty: Coffee Shop Management System
 
-![Coffee Shop](https://github.com/Mandaviya-Chirag/CupCrafty/assets/homepage.png)
+![Coffee Shop](https://github.com/Mandaviya-Chirag/CupCrafty/assets/images/homepage.png)
 
 
 Welcome to CupCrafty, your all-in-one solution for managing every aspect of your coffee shop! From inventory and sales to user roles and branch management, CupCrafty empowers coffee shop owners to efficiently run their business.
