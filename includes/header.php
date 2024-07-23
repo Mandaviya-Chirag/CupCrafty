@@ -39,7 +39,7 @@ if (!isset($_SESSION['LoggedIn'])) {
                     </button>
                 </div>
                 <div>
-                    <a class="navbar-brand brand-logo" href="<?= urlOf('assets/index.html') ?>">
+                    <a class="navbar-brand brand-logo" href="<?= urlOf('#') ?>">
                         <img src="<?= urlOf('assets/images/logo1.png') ?>" alt="logo" />
                     </a>
                     <a class="navbar-brand brand-logo-mini" href="<?= urlOf('assets/index.html') ?>">

@@ -1,5 +1,5 @@
 <?php
-require ('../../includes/init.php');
+require('../../includes/init.php');
 
 $UserId = $_SESSION['UserId'];
 $permissions = authenticate('Products', $UserId);
@@ -26,31 +26,28 @@ include pathOf('includes/sidebar.php');
                 <div>
                   <label for="">Category</label>
                   <select class="form-select mb-3" id="categoryId" autofocus>
-                    <?php foreach ($categories as $category): ?>
+                    <?php foreach ($categories as $category) : ?>
                       <option value="<?= $category['Id'] ?>"><?= $category['Name'] ?>
                       </option>
                     <?php endforeach; ?>
                   </select>
                 </div>
                 <label>Name</label>
-                <input type="text" class="form-control" id="Name" placeholder="Enter Name"
-                  value="<?= $products['Name'] ?>" />
+                <input type="text" class="form-control" id="Name" placeholder="Enter Name" value="<?= $products['Name'] ?>" />
               </div>
               <div class="form-group">
                 <label>Description</label>
-                <input type="text" class="form-control" id="Description" placeholder="Enter Description"
-                  value="<?= $products['Description'] ?>" />
+                <input type="text" class="form-control" id="Description" placeholder="Enter Description" value="<?= $products['Description'] ?>" />
               </div>
               <div class="form-group">
                 <label>Price</label>
-                <input type="text" class="form-control" id="Price" placeholder="Enter Price"
-                  value="<?= $products['Price'] ?>" />
+                <input type="text" class="form-control" id="Price" placeholder="Enter Price" value="<?= $products['Price'] ?>" />
               </div>
               <div class="form-group">
                 <label>ImageFile</label>
                 <input type="file" class="form-control" id="Image" value="<?= $products['Image'] ?>" />
               </div>
-              <button type="submit" class="btn btn-primary me-2" onclick="updateData()">
+              <button type="button" class="btn btn-primary me-2" onclick="updateData()">
                 Update
               </button>
               <button class="btn btn-light">Cancel</button>
@@ -77,19 +74,19 @@ include pathOf('includes/sidebar.php');
       form.append('Image', $('#Image')[0].files[0]);
 
 
+      // console.log(form);
       $.ajax({
         url: '../../api/products/update',
         method: 'POST',
         data: form,
         processData: false,
         contentType: false,
-        success: function (response) {
-          alert('Products Updated!');
+        success: function(response) {
           console.log(response.success);
-          if (response.success !== true) {
+          if (response.success !== true)
             return;
-            window.location.href = './index';
-          }
+          alert('Products Updated!');
+          window.location.href = './index';
         }
 
       })

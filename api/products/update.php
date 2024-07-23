@@ -7,15 +7,15 @@ $categoryId = $_POST['categoryId'];
 $Name = $_POST['Name'];
 $Description = $_POST['Description'];
 $Price = $_POST['Price'];
-$Image = $_POST['Image'];
+$Image = $_FILES['Image'];
 
 $time = time();
-$fileName = "$time-" . $_FILES['Image']['Name'];
+$fileName = "$time-" . $_FILES['Image']['name'];
 $tmpFileName = $_FILES['Image']['tmp_name'];
 move_uploaded_file($tmpFileName, pathOf("assets/img/uploads/$fileName"));
 
-$query = "UPDATE Products categoryId=?, Name=?, Description=?, Price=?, Image=? WHERE Id=?";
-$params = [$categoryId, $name, $Description, $Price, $Image, $Id];
+$query = "UPDATE Products SET CategoryId=?, Name=?, Description=?, Price=?, ImageFileName=? WHERE Id=?";
+$params = [$categoryId, $Name, $Description, $Price, $fileName, $Id];
 
 $result = execute($query, $params);
 if ($result)

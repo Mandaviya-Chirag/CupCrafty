@@ -8,6 +8,24 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="<?= urlOf('pages/roles') ?>">
+                    <i class="mdi mdi-grid-large menu-icon"></i>
+                    <span class="menu-title">Roles</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= urlOf('pages/city') ?>">
+                    <i class="mdi mdi-grid-large menu-icon"></i>
+                    <span class="menu-title">City</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= urlOf('pages/branchdetails') ?>">
+                    <i class="mdi mdi-grid-large menu-icon"></i>
+                    <span class="menu-title">BranchDetails</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="<?= urlOf('pages/categories') ?>">
                     <i class="mdi mdi-grid-large menu-icon"></i>
                     <span class="menu-title">Categories</span>
@@ -43,12 +61,6 @@
                     <span class="menu-title">Stock</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?= urlOf('pages/branchdetails') ?>">
-                    <i class="mdi mdi-grid-large menu-icon"></i>
-                    <span class="menu-title">BranchDetails</span>
-                </a>
-            </li>
             <!-- <li class="nav-item">
                 <a class="nav-link" href="<?= urlOf('pages/users') ?>">
                     <i class="mdi mdi-grid-large menu-icon"></i>
@@ -61,17 +73,5 @@
                     <span class="menu-title">Permissions</span>
                 </a>
             </li> -->
-            <li class="nav-item">
-                <a class="nav-link" href="<?= urlOf('pages/roles') ?>">
-                    <i class="mdi mdi-grid-large menu-icon"></i>
-                    <span class="menu-title">Roles</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?= urlOf('pages/city') ?>">
-                    <i class="mdi mdi-grid-large menu-icon"></i>
-                    <span class="menu-title">City</span>
-                </a>
-            </li>
         </ul>
     </nav>
