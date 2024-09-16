@@ -2,7 +2,7 @@
 require '../../includes/init.php';
 $UserId = $_SESSION['UserId'];
 $permissions = authenticate('Products', $UserId);
-$products = select("SELECT Products.Id, Products.Name, Products.Description, Products.Price, Products.ImageFileName, Categories.Name AS 'CategoryName' FROM Products INNER JOIN Categories ON Products.CategoryId = Categories.Id");
+$products = select("SELECT Products.Id, Products.Name, Products.Description, Products.Price, Products.ImageFileName, Categories.Name AS 'CategoryName' FROM Products INNER JOIN Categories ON Products.CategoryId = Categories.Id WHERE Products.IsDeleted != 1");
 $index = 0;
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
@@ -42,7 +42,7 @@ include pathOf('includes/sidebar.php');
                 </thead>
                 <tbody>
                   <?php if ($permissions['ViewPermission'] == 1) {
-                    foreach ($products as $product): ?>
+                    foreach ($products as $product) : ?>
                       <tr>
                         <td><?= ++$index ?></td>
                         <td><?= $product['CategoryName'] ?></td>
@@ -50,8 +50,7 @@ include pathOf('includes/sidebar.php');
                         <td><?= $product['Description'] ?></td>
                         <td><?= $product['Price'] ?></td>
                         <td>
-                          <img src="<?= urlOf('assets/img/uploads/') . $product['ImageFileName'] ?>" height="20%"
-                            width="20%">
+                          <img src="<?= urlOf('assets/img/uploads/') . $product['ImageFileName'] ?>" height="20%" width="20%">
                         </td>
                         <?php if ($permissions['EditPermission'] == 1) { ?>
                           <td>
@@ -71,7 +70,7 @@ include pathOf('includes/sidebar.php');
                           </td>
                         <?php } ?>
                       </tr>
-                    <?php endforeach;
+                  <?php endforeach;
                   } ?>
                 </tbody>
 
@@ -88,7 +87,6 @@ include pathOf('includes/sidebar.php');
   ?>
 
   <script>
-
     function deleteProduct(Id) {
       if (confirm("Are you sure you want to delete this Prouduct?")) {
         $.ajax({
@@ -97,14 +95,13 @@ include pathOf('includes/sidebar.php');
           data: {
             Id: Id
           },
-          success: function (response) {
+          success: function(response) {
             alert('Product deleted!');
             window.location.href = './index';
           }
         });
       }
     }
-
   </script>
 
   <?php

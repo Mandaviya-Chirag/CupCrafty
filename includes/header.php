@@ -42,16 +42,16 @@ if (!isset($_SESSION['LoggedIn'])) {
                     <a class="navbar-brand brand-logo" href="<?= urlOf('#') ?>">
                         <img src="<?= urlOf('assets/images/logo1.png') ?>" alt="logo" />
                     </a>
-                    <a class="navbar-brand brand-logo-mini" href="<?= urlOf('assets/index.html') ?>">
+                    <!-- <a class="navbar-brand brand-logo-mini" href="<?= urlOf('assets/index.html') ?>">
                         <img src="<?= urlOf('assets/images/logo-mini.svg') ?>" alt="logo" />
-                    </a>
+                    </a> -->
                 </div>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-top">
                 <ul class="navbar-nav">
                     <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
                         <h1 class="welcome-text">Welcome Back ! <span class="text-black fw-bold">Chirag Mandaviya</span></h1>
-                        <h3 class="welcome-sub-text">Your performance summary this week </h3>
+                        <h3 class="welcome-sub-text">"Coffee Crafted with Care"</h3>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">

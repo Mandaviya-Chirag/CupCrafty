@@ -1,11 +1,11 @@
 <?php
 require '../../includes/init.php';
-$UserId = $_SESSION['UserId'];
-$permissions = authenticate('Users', $UserId);
-if ($permissions['AddPermission'] != 1)
-  header('Location: ./index');
-$branchDetails = select("SELECT * FROM BranchDetails");
-$roles = select("SELECT * FROM Roles");
+// $UserId = $_SESSION['UserId'];
+// $permissions = authenticate('Users', $UserId);
+// if ($permissions['AddPermission'] != 1)
+//   header('Location: ./index');
+// $branchDetails = select("SELECT * FROM BranchDetails");
+// $roles = select("SELECT * FROM Roles");
 include pathOf('includes/header.php');
 include pathOf('includes/sidebar.php');
 ?>

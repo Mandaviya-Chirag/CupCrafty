@@ -33,18 +33,16 @@ require '../includes/init.php';
                                 <label class="col-md-2 col-form-label">Name</label>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control form-control-lg" id="Name"
-                                    placeholder="Enter your Username" autofocus>
+                                <input type="text" class="form-control form-control-lg" id="Name" placeholder="Enter your Username" autofocus>
                             </div>
                             <div class="row">
                                 <label class="col-md-2 col-form-label">Password</label>
                             </div>
                             <div class="form-group">
-                                <input type="password" class="form-control form-control-lg" id="Password"
-                                    placeholder="Enter your Password">
+                                <input type="password" class="form-control form-control-lg" id="Password" placeholder="Enter your Password">
                             </div>
                             <div class="mt-3">
-                                <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="button" onclick="sendData()" >Log
+                                <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="button" onclick="sendData()">Log
                                     In</button>
                             </div>
                         </form>
@@ -65,7 +63,7 @@ include pathOf('includes/script.php');
             Password: $('#Password').val()
         }
 
-        $.post('../api/login.php', data, function (response) {
+        $.post('../api/login.php', data, function(response) {
             console.log(response);
             if (response.success !== true)
                 return;

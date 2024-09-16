@@ -45,7 +45,7 @@ include pathOf('includes/sidebar.php');
               </div>
               <div class="form-group">
                 <label>ImageFile</label>
-                <input type="file" class="form-control" id="Image" value="<?= $products['Image'] ?>" />
+                <input type="file" class="form-control" id="Image" />
               </div>
               <button type="button" class="btn btn-primary me-2" onclick="updateData()">
                 Update

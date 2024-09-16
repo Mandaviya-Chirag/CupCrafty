@@ -4,19 +4,19 @@ CREATE DATABASE `CupCrafty`;
 
 USE `CupCrafty`;
 
-CREATE TABLE 
+CREATE TABLE
     `Roles` (
         `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `Name` VARCHAR(255) NOT NULL
-);
+    );
 
-CREATE TABLE 
+CREATE TABLE
     `City` (
         `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `Name` VARCHAR(255) NOT NULL
-);
+    );
 
-CREATE TABLE 
+CREATE TABLE
     `BranchDetails` (
         `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `CityId` INT NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE
         `SquareFeet` INT NOT NULL,
         `OwnerName` VARCHAR(255) NOT NULL,
         FOREIGN KEY (`CityId`) REFERENCES `City` (`Id`)
-);
+    );
 
 CREATE TABLE
     `Users` (
@@ -40,32 +40,32 @@ CREATE TABLE
         FOREIGN KEY (`BranchId`) REFERENCES `BranchDetails` (`Id`)
     );
 
-CREATE TABLE 
+CREATE TABLE
     `Modules` (
         `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `Name` VARCHAR(255) NOT NULL
-);
-
-    CREATE TABLE 
-        `Permissions` (
-            `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-            `UserId` INT NOT NULL,
-            `ModuleId` INT NOT NULL,
-            `AddPermission` INT NOT NULL,
-            `EditPermission` INT NOT NULL,
-            `DeletePermission` INT NOT NULL,
-            `ViewPermission` INT NOT NULL,
-            FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`),
-            FOREIGN KEY (`ModuleId`) REFERENCES `Modules` (`Id`)
     );
 
-CREATE TABLE 
+CREATE TABLE
+    `Permissions` (
+        `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+        `UserId` INT NOT NULL,
+        `ModuleId` INT NOT NULL,
+        `AddPermission` INT NOT NULL,
+        `EditPermission` INT NOT NULL,
+        `DeletePermission` INT NOT NULL,
+        `ViewPermission` INT NOT NULL,
+        FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`),
+        FOREIGN KEY (`ModuleId`) REFERENCES `Modules` (`Id`)
+    );
+
+CREATE TABLE
     `Categories` (
         `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `Name` VARCHAR(255) NOT NULL
-);
+    );
 
-CREATE TABLE 
+CREATE TABLE
     `Products` (
         `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `CategoryId` INT NOT NULL,
@@ -73,10 +73,11 @@ CREATE TABLE
         `Description` VARCHAR(255) NOT NULL,
         `Price` INT NOT NULL,
         `ImageFileName` VARCHAR(255) NOT NULL,
+        `IdDeleted` INT NOT NULL DEFAULT 0,
         FOREIGN KEY (`CategoryId`) REFERENCES `Categories` (`Id`)
-);
+    );
 
-CREATE TABLE 
+CREATE TABLE
     `Stock` (
         `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `BranchId` INT NOT NULL,
@@ -84,9 +85,9 @@ CREATE TABLE
         `CurrentQuantity` INT NOT NULL,
         FOREIGN KEY (`BranchId`) REFERENCES `BranchDetails` (`Id`),
         FOREIGN KEY (`ProductId`) REFERENCES `Products` (`Id`)
-);
+    );
 
-CREATE TABLE 
+CREATE TABLE
     `Purchase` (
         `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `BranchId` INT NOT NULL,
@@ -94,9 +95,9 @@ CREATE TABLE
         `Quantity` INT NOT NULL,
         FOREIGN KEY (`BranchId`) REFERENCES `BranchDetails` (`Id`),
         FOREIGN KEY (`ProductId`) REFERENCES `Products` (`Id`)
-);
+    );
 
-CREATE TABLE 
+CREATE TABLE
     `Sales` (
         `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `BranchId` INT NOT NULL,
@@ -104,16 +105,17 @@ CREATE TABLE
         `Quantity` INT NOT NULL,
         FOREIGN KEY (`BranchId`) REFERENCES `BranchDetails` (`Id`),
         FOREIGN KEY (`ProductId`) REFERENCES `Products` (`Id`)
-);
+    );
 
-CREATE TABLE 
+CREATE TABLE
     `Expense` (
         `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `BranchId` INT NOT NULL,
         `Name` VARCHAR(255) NOT NULL,
         `Amount` INT NOT NULL,
         FOREIGN KEY (`BranchId`) REFERENCES `BranchDetails` (`Id`)
-);
+    );
+
 INSERT INTO
     Roles (Name)
 VALUES
