@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS `CupCrafty`;
 
 CREATE DATABASE `CupCrafty`;
 
-USE `CupCrafty`;
+USE `CupCrafty`; 
 
 CREATE TABLE
     `Roles` (
